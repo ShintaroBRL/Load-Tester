@@ -1,2 +1,2 @@
 # login-flood
-programa para simular varias requisições de login em determinado site
+programa para simular varias requisições de login simultaneos em determinado site
