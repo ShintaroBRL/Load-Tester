@@ -86,8 +86,12 @@ def execute_section(master):
     scrollbar.config(command=execute_section.listbox.yview)
 
 def exec_button_click():
-    # reformular a logica dessa função pois ela precisa ser executada em loop
-    # da forma que esta não da para rodar em loop
+    for i in range(config_section.min_users.get(),  config_section.max_users.get())
+        exec()
+    
+def exec():
+    print("EXEC n°"+i)
+    execute_section.listbox.insert(END,"Iniciando "+i)
     url = config_section.link.get()
 
     if config_section.checked.get():
@@ -97,7 +101,7 @@ def exec_button_click():
 
     print(url)
     print(login_form)
-
+    
 def validate_config():
     # escrever aqui uma forma de validar os campos de configurações
     pass
