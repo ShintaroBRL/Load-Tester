@@ -2,7 +2,7 @@
 #   Started: 09/07-08:00
 #   Time Spend: 11:30
 
-from tkinter import *
+from Tkinter import *
 from lxml import html
 import requests
 import logging
@@ -10,11 +10,9 @@ import threading
 import time
 
 # Acho que tem forma melhor de escrever tudo isso aqui
-# Oq eu to fazendo da minha vida? 09/07-11:14
-# Porque eu to fazendo isso? 09/07-11:14
 
 def menu_bar_setup(master):
-    #isso é necessario?
+    #isso e necessario?
     menu_widget = Menu(master)
     menu_widget.add_command(label="Sistema")
     menu_widget.add_command(label="Salvar")
@@ -65,8 +63,8 @@ def config_section(master):
     config_section.logintoken_fielddata.config(width=39)
     config_section.logintoken_fielddata.grid(row=6, column=1, sticky='W', padx=(0,10), pady=(0,10))
 
-    config_section.checked = IntVar()
-    logintoken = Checkbutton(config_labelframe, text="Simultaneos?", variable=config_section.checked)
+    config_section.simunt = IntVar()
+    logintoken = Checkbutton(config_labelframe, text="Simultaneos?", variable=config_section.simunt)
     logintoken.grid(row=7, column=1, sticky='W', padx=(5,10), pady=(5,10))
 
 def execute_section(master):
@@ -75,8 +73,8 @@ def execute_section(master):
     
     exec_button = Button(config_labelframe, text="Executar", command=exec_button_click)
     exec_button.grid(row=0, column=0, sticky=W, padx=(5,10), pady=(5,10))
-    clear_button = Button(config_labelframe, text="Limpar Saida", command=clear_button_click)
-    clear_button.grid(row=0, column=0, sticky=W, padx=(62,10), pady=(5,10))
+    execute_section.clear_button = Button(config_labelframe, text="Limpar Saida", command=clear_button_click)
+    execute_section.clear_button.grid(row=0, column=0, sticky=W, padx=(62,10), pady=(5,10))
 
     scrollbar = Scrollbar(config_labelframe)
     scrollbar.grid(row=1, column=1, sticky=N+S+W)
@@ -86,29 +84,39 @@ def execute_section(master):
     scrollbar.config(command=execute_section.listbox.yview)
 
 def exec_button_click():
-    for i in range(config_section.min_users.get(),  config_section.max_users.get())
-        exec()
-    
-def exec():
-    print("EXEC n°"+i)
-    execute_section.listbox.insert(END,"Iniciando "+i)
+    execute_section.clear_button.config(state="disabled")
+    position = 0
+    for i in range(int(config_section.min_users.get()), int(config_section.max_users.get())):
+        if config_section.simunt:
+            x = threading.Thread(target=execute, args=(i,position,))
+            x.start()
+        else:
+            execute(i,position)
+        position += 1
+
+def execute(i, position):
+    execute_section.listbox.insert(position,"Iniciando "+str(position))
+    execute_section.listbox.itemconfig(position, {'bg':'yellow'})
     url = config_section.link.get()
+    logintoken = ""
 
     if config_section.checked.get():
-        login_form = {"'"+config_section.login.get()+"'": 'user', "'"+config_section.senha.get()+"'": 'pass', 'logintoken': 'token_here'}
+        login_form = {"'"+config_section.login.get()+"'": i, "'"+config_section.senha.get()+"'": i, 'logintoken': logintoken}
     else:
-        login_form = {"'"+config_section.login.get()+"'": 'user', "'"+config_section.senha.get()+"'": 'pass'}
+        login_form = {"'"+config_section.login.get()+"'": i, "'"+config_section.senha.get()+"'": i}
 
     print(url)
-    print(login_form)
+    time.sleep(1+position)
+    execute_section.listbox.delete(position)
+    execute_section.listbox.insert(position,login_form)
+    execute_section.listbox.itemconfig(position, {'bg':'green'})
     
 def validate_config():
-    # escrever aqui uma forma de validar os campos de configurações
+    # escrever aqui uma forma de validar os campos de configuracoes
     pass
 
 def clear_button_click():
-    print("clear")
-
+    execute_section.listbox.delete(0,'end')
 class Application:
     def __init__(self, master=None):
         menu_bar_setup(master)
@@ -117,7 +125,7 @@ class Application:
 
 root = Tk()
 root.title("Login Flood")
-root.geometry("700x500")
+root.geometry("750x500")
 root.resizable(width=False, height=False)
 Application(root)
 root.mainloop()
