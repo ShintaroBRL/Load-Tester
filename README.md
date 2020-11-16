@@ -38,7 +38,7 @@ Juliano Lira Florentino –  juliano0forum@gmail.com
 
 Distributed under the GNU GENERAL PUBLIC LICENSE license. See ``LICENSE`` for more information.
 
-[https://github.com/ShintaroBRL/Load-Tester](https://github.com/ShintaroBRL)
+[https://github.com/ShintaroBRL/Load-Tester/blob/master/LICENSE](https://github.com/ShintaroBRL)
 
 ## Contributing
 
